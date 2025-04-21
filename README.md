@@ -70,4 +70,4 @@ This project is configured for easy deployment on Netlify:
 
 ## License
 
-ISC 
+ISC
