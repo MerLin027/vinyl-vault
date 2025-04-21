@@ -49,7 +49,3 @@ This will concurrently run the backend server and the React frontend, making the
 
 - `client/` - React frontend application
 - `server/` - Node.js backend API server
-
-## License
-
-ISC
