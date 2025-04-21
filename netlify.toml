@@ -1,6 +1,6 @@
 [build]
   base = "."
-  command = "cd client && npm install && npm run build"
+  command = "npm --prefix client install && npm --prefix client run build"
   publish = "client/build"
 
 # Redirect all traffic to index.html for SPA routing
