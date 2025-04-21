@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import { authAPI } from '../utils/api';
 
 // Create Auth Context
 const AuthContext = createContext(null);
@@ -19,14 +19,14 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setError(null);
-      const response = await axios.post('/api/auth/login', { email, password });
+      const response = await authAPI.login(email, password);
       
-      if (response.data.success) {
-        setCurrentUser(response.data.user);
+      if (response.success) {
+        setCurrentUser(response.user);
         return { success: true };
       } else {
-        setError(response.data.error || 'Login failed');
-        return { success: false, message: response.data.error };
+        setError(response.error || 'Login failed');
+        return { success: false, message: response.error };
       }
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Login failed';
@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }) => {
   const signup = async (email, username, password) => {
     try {
       setError(null);
-      await axios.post('/api/auth/signup', { email, username, password });
-      return { success: true };
+      const response = await authAPI.signup({ email, username, password });
+      return { success: response.success, message: response.message };
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Signup failed';
       setError(errorMessage);
@@ -51,9 +51,11 @@ export const AuthProvider = ({ children }) => {
   // Logout method
   const logout = async () => {
     try {
-      await axios.post('/api/auth/logout');
-      setCurrentUser(null);
-      return { success: true };
+      const response = await authAPI.logout();
+      if (response.success) {
+        setCurrentUser(null);
+      }
+      return { success: response.success, message: response.message };
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Logout failed';
       setError(errorMessage);
@@ -65,10 +67,10 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/auth/status');
+      const response = await authAPI.checkStatus();
       
-      if (response.data.authenticated) {
-        setCurrentUser(response.data.user);
+      if (response.authenticated) {
+        setCurrentUser(response.user);
       } else {
         setCurrentUser(null);
       }
@@ -107,4 +109,4 @@ export const useAuth = () => {
   return context;
 };
 
-export default AuthContext; 
+export default AuthContext;
