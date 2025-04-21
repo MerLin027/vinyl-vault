@@ -1,6 +1,6 @@
 [build]
   base = "."
-  command = "npm --prefix client install && npm --prefix client run build"
+  command = "rm -rf client/node_modules client/.cache && npm --prefix client install && chmod +x client/node_modules/.bin/react-scripts && npm --prefix client run build"
   publish = "client/build"
   functions = "netlify/functions"
 
@@ -14,4 +14,4 @@
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
-  status = 200 
+  status = 200
