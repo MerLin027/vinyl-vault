@@ -2,6 +2,7 @@
   base = "."
   command = "npm --prefix client install && npm --prefix client run build"
   publish = "client/build"
+  functions = "netlify/functions"
 
 # Redirect all traffic to index.html for SPA routing
 [[redirects]]
