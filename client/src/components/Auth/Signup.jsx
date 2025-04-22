@@ -95,7 +95,7 @@ const Signup = () => {
       <div className="login-card">
         <div className="login-header">
           <h1>Create Account</h1>
-          <p>Join ConnecShop and discover amazing products</p>
+          <p>Join Vinyl Vault and start your record collection</p>
         </div>
         
         <form className="login-form" onSubmit={handleSubmit}>

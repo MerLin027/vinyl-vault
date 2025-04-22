@@ -24,21 +24,21 @@ let users = [
 
 // API Routes
 app.post('/api/auth/signup', (req, res) => {
-  const { email, username: name, password } = req.body;
+  const { email, username, password } = req.body;
   
   // Simple validation
-  if (!email || !name || !password) {
-    return res.status(400).json({ error: 'All fields are required' });
+  if (!email || !username || !password) {
+    return res.status(400).json({ success: false, error: 'All fields are required' });
   }
 
   // Check if email already exists
   if (users.find(u => u.email === email)) {
-    return res.status(400).json({ error: 'Email already registered' });
+    return res.status(400).json({ success: false, error: 'Email already registered' });
   }
 
   // Store user
-  users.push({ email, name, password });
-  res.status(201).json({ message: 'User registered successfully' });
+  users.push({ email, name: username, password });
+  res.status(201).json({ success: true, message: 'User registered successfully' });
 });
 
 app.post('/api/auth/login', (req, res) => {
@@ -50,25 +50,26 @@ app.post('/api/auth/login', (req, res) => {
   if (user) {
     res.json({ 
       success: true, 
-      user: { email: user.email, name: user.name }
+      user: { email: user.email, name: user.name },
+      message: 'Login successful'
     });
   } else {
-    res.status(401).json({ error: 'Invalid credentials' });
+    res.status(401).json({ success: false, error: 'Invalid credentials' });
   }
 });
 
 app.post('/api/auth/logout', (req, res) => {
-  res.status(200).json({ message: 'Logged out successfully' });
+  res.status(200).json({ success: true, message: 'Logged out successfully' });
 });
 
 app.get('/api/auth/status', (req, res) => {
   // In a real implementation, this would verify a JWT token
-  res.json({ authenticated: false });
+  res.json({ success: true, authenticated: false });
 });
 
 // Default route to handle function invocation
 app.use('/.netlify/functions/api', (req, res) => {
-  res.json({ message: 'API is running' });
+  res.json({ success: true, message: 'API is running' });
 });
 
 // Export the serverless function

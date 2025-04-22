@@ -23,13 +23,13 @@ export const AuthProvider = ({ children }) => {
       
       if (response.success) {
         setCurrentUser(response.user);
-        return { success: true };
+        return { success: true, message: response.message };
       } else {
-        setError(response.error || 'Login failed');
-        return { success: false, message: response.error };
+        setError(response.message || 'Login failed');
+        return { success: false, message: response.message };
       }
     } catch (err) {
-      const errorMessage = err.response?.data?.error || 'Login failed';
+      const errorMessage = err.response?.data?.message || 'Login failed';
       setError(errorMessage);
       return { success: false, message: errorMessage };
     }
@@ -52,12 +52,17 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       const response = await authAPI.logout();
-      if (response.success) {
-        setCurrentUser(null);
-      }
-      return { success: response.success, message: response.message };
+      
+      // Always set currentUser to null on logout attempt
+      setCurrentUser(null);
+      return { 
+        success: response.success, 
+        message: response.message || 'Logged out successfully' 
+      };
     } catch (err) {
-      const errorMessage = err.response?.data?.error || 'Logout failed';
+      // Even on error, ensure user is logged out on client side
+      setCurrentUser(null);
+      const errorMessage = err.response?.data?.message || 'Logout failed';
       setError(errorMessage);
       return { success: false, message: errorMessage };
     }

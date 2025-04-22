@@ -536,39 +536,6 @@
   background-color: var(--accent);
 }
 
-/* Notification */
-.notification {
-  position: fixed;
-  bottom: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--primary);
-  color: var(--text);
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  opacity: 0;
-  transition: all 0.3s ease;
-  border-left: 4px solid var(--accent);
-}
-
-.notification.show {
-  bottom: 30px;
-  opacity: 1;
-}
-
-.notification .material-icons {
-  color: var(--accent);
-}
-
-.notification p {
-  margin: 0;
-}
-
 /* Mock Data Notice */
 .mock-data-notice {
   background-color: #e1f5fe;

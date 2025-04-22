@@ -58,15 +58,27 @@ const Navbar = () => {
   
   const handleLogout = async () => {
     try {
-      await logout();
-      // Clear cart and any other stored data
-      localStorage.clear();
-      // Hide confirmation
-      setShowLogoutConfirm(false);
-      // Navigate to login page
-      navigate('/login');
+      const result = await logout();
+      if (result.success) {
+        // Clear cart and any other stored data
+        localStorage.clear();
+        // Hide confirmation
+        setShowLogoutConfirm(false);
+        // Navigate to login page
+        navigate('/login');
+      } else {
+        console.error('Logout failed:', result.message);
+        // Still clear local data and navigate away even if API call fails
+        localStorage.clear();
+        setShowLogoutConfirm(false);
+        navigate('/login');
+      }
     } catch (error) {
       console.error('Error during logout:', error);
+      // Force logout on client side even if there's an error
+      localStorage.clear();
+      setShowLogoutConfirm(false);
+      navigate('/login');
     }
   };
   

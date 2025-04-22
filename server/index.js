@@ -30,23 +30,23 @@ const users = [
 
 // API Routes
 app.post('/api/auth/signup', (req, res) => {
-    const { email, username: name, password } = req.body;
+    const { email, username, password } = req.body;
     
     // Simple validation
-    if (!email || !name || !password) {
-        return res.status(400).json({ error: 'All fields are required' });
+    if (!email || !username || !password) {
+        return res.status(400).json({ success: false, error: 'All fields are required' });
     }
 
     // Check if email already exists
     // TODO: Replace with MongoDB query - User.findOne({ email })
     if (users.find(u => u.email === email)) {
-        return res.status(400).json({ error: 'Email already registered' });
+        return res.status(400).json({ success: false, error: 'Email already registered' });
     }
 
     // Store user
     // TODO: Replace with MongoDB - new User({ email, name, password }).save()
-    users.push({ email, name, password });
-    res.status(201).json({ message: 'User registered successfully' });
+    users.push({ email, name: username, password });
+    res.status(201).json({ success: true, message: 'User registered successfully' });
 });
 
 app.post('/api/auth/login', (req, res) => {
@@ -62,10 +62,11 @@ app.post('/api/auth/login', (req, res) => {
         app.locals.currentUser = { email: user.email, name: user.name };
         res.json({ 
             success: true, 
-            user: { email: user.email, name: user.name }
+            user: { email: user.email, name: user.name },
+            message: 'Login successful'
         });
     } else {
-        res.status(401).json({ error: 'Invalid credentials' });
+        res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
 });
 
@@ -74,14 +75,14 @@ app.post('/api/auth/logout', (req, res) => {
     // Clear the current user session
     // TODO: With JWT auth, this would be handled client-side by removing the token
     app.locals.currentUser = null;
-    res.status(200).json({ message: 'Logged out successfully' });
+    res.status(200).json({ success: true, message: 'Logged out successfully' });
 });
 
 // Middleware to check auth status
 app.use('/api/protected/*', (req, res, next) => {
     // TODO: Replace with JWT verification middleware
     if (!app.locals.currentUser) {
-        return res.status(401).json({ error: 'Not logged in' });
+        return res.status(401).json({ success: false, error: 'Not logged in' });
     }
     next();
 });
@@ -91,11 +92,12 @@ app.get('/api/auth/status', (req, res) => {
     // TODO: Replace with JWT verification
     if (app.locals.currentUser) {
         res.json({ 
+            success: true,
             authenticated: true, 
             user: app.locals.currentUser 
         });
     } else {
-        res.json({ authenticated: false });
+        res.json({ success: true, authenticated: false });
     }
 });
 
@@ -103,9 +105,12 @@ app.get('/api/auth/status', (req, res) => {
 app.get('/api/user', (req, res) => {
     // TODO: Replace with JWT verification and MongoDB query
     if (app.locals.currentUser) {
-        res.json(app.locals.currentUser);
+        res.json({
+            success: true,
+            user: app.locals.currentUser
+        });
     } else {
-        res.status(401).json({ error: 'Not logged in' });
+        res.status(401).json({ success: false, error: 'Not logged in' });
     }
 });
 

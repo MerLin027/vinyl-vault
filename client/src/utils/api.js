@@ -15,27 +15,52 @@ export const authAPI = {
         body: JSON.stringify({ email, password }),
         credentials: 'include'
       });
-      return await response.json();
+      const data = await response.json();
+      
+      // If server returns an error message, include it in the response
+      if (data.error) {
+        return { 
+          success: false, 
+          message: data.error 
+        };
+      }
+      
+      // Otherwise it's a successful login
+      return { 
+        success: true, 
+        user: data.user,
+        message: data.message || 'Logged in successfully'
+      };
     } catch (error) {
       console.error('Login error:', error);
-      return { error: 'Failed to connect to server' };
+      return { 
+        success: false, 
+        message: 'Failed to connect to server' 
+      };
     }
   },
 
-  signup: async (userData) => {
+  signup: async ({ email, username, password }) => {
     try {
       const response = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({ email, username: username, password }),
         credentials: 'include'
       });
-      return await response.json();
+      const data = await response.json();
+      return { 
+        success: !data.error, 
+        message: data.message || data.error 
+      };
     } catch (error) {
       console.error('Signup error:', error);
-      return { error: 'Failed to connect to server' };
+      return { 
+        success: false, 
+        message: 'Failed to connect to server' 
+      };
     }
   },
 
@@ -45,10 +70,18 @@ export const authAPI = {
         method: 'POST',
         credentials: 'include'
       });
-      return await response.json();
+      const data = await response.json();
+      // Ensure we return a response with success property
+      return { 
+        success: true, 
+        message: data.message || 'Logged out successfully' 
+      };
     } catch (error) {
       console.error('Logout error:', error);
-      return { error: 'Failed to connect to server' };
+      return { 
+        success: false, 
+        message: 'Failed to connect to server' 
+      };
     }
   },
 
@@ -58,10 +91,20 @@ export const authAPI = {
         method: 'GET',
         credentials: 'include'
       });
-      return await response.json();
+      const data = await response.json();
+      // Standardize response format
+      return {
+        success: true,
+        authenticated: data.authenticated,
+        user: data.user || null
+      };
     } catch (error) {
       console.error('Auth check error:', error);
-      return { authenticated: false };
+      return { 
+        success: false, 
+        authenticated: false,
+        message: 'Failed to connect to server'
+      };
     }
   }
 };
