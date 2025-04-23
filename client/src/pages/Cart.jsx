@@ -91,8 +91,9 @@ const Cart = () => {
               <div key={item.id} className="cart-item">
                 <div className="cart-item-product">
                   <img 
-                    src={item.images?.[0] || 'https://via.placeholder.com/80'} 
+                    src={item.images?.[0] || 'https://via.placeholder.com/300'} 
                     alt={item.title} 
+                    loading="lazy"
                   />
                   <div className="cart-item-details">
                     <h3>{item.title}</h3>

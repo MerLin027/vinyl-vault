@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './ProductCard.css';
 
 const ProductCard = ({ product, onAddToCart }) => {
   const { id, title, price, images, category, description } = product;
-  const [isHovered, setIsHovered] = useState(false);
   
   // Simulate a random rating between 3.5 and 5.0
-  const rating = product.rating || (3.5 + Math.random() * 1.5).toFixed(1);
+  const rating = useMemo(() => {
+    return product.rating || (3.5 + Math.random() * 1.5).toFixed(1);
+  }, [product.rating]);
   
   // Vinyl-specific info (use product data if available, otherwise generate random)
-  const getVinylInfo = () => {
+  const vinylInfo = useMemo(() => {
     // Random genres
     const genres = ['Rock', 'Jazz', 'Classical', 'Hip Hop', 'Electronic', 'Soul', 'Blues', 'Pop'];
     // Random decades
@@ -23,21 +24,20 @@ const ProductCard = ({ product, onAddToCart }) => {
       decade: product.decade || decades[Math.floor(Math.random() * decades.length)],
       condition: product.condition || conditions[Math.floor(Math.random() * conditions.length)]
     };
-  };
-  
-  const vinylInfo = getVinylInfo();
+  }, [product.genre, product.decade, product.condition]);
   
   const handleAddToCart = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onAddToCart(product);
-  };
-  
-  const handleQuickView = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // In a real app, this would open a quick view modal
-    alert(`Quick View: ${title}`);
+    // Ensure the event doesn't propagate or trigger navigation
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    // Add product to cart without modifying the original product
+    onAddToCart({...product});
+    
+    // Prevent any default behavior
+    return false;
   };
   
   const renderStars = (rating) => {
@@ -58,11 +58,18 @@ const ProductCard = ({ product, onAddToCart }) => {
     return stars;
   };
   
+  // Prevent event bubbling outside the card
+  const handleCardClick = (e) => {
+    if (e.target.closest('.add-to-cart-btn')) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+  
   return (
     <div 
       className="product-card vinyl-sleeve"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleCardClick}
     >
       <Link to={`/product/${id}`} className="product-link">
         <div className="record-hole"></div>
@@ -74,25 +81,6 @@ const ProductCard = ({ product, onAddToCart }) => {
           />
           {category && (
             <span className="product-category-tag">{category.name}</span>
-          )}
-          
-          {isHovered && (
-            <div className="quick-actions">
-              <button 
-                className="quick-action-btn"
-                onClick={handleQuickView}
-                aria-label="Quick view"
-              >
-                <span className="material-icons">visibility</span>
-              </button>
-              <button 
-                className="quick-action-btn"
-                onClick={handleAddToCart}
-                aria-label="Add to cart"
-              >
-                <span className="material-icons">add_shopping_cart</span>
-              </button>
-            </div>
           )}
         </div>
         
@@ -130,6 +118,7 @@ const ProductCard = ({ product, onAddToCart }) => {
             <button 
               className="add-to-cart-btn"
               onClick={handleAddToCart}
+              onMouseDown={(e) => e.preventDefault()}
               aria-label={`Add ${title} to cart`}
             >
               <span className="material-icons cart-icon">shopping_cart</span>

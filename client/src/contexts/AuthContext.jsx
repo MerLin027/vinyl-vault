@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.logout();
       
       // Always set currentUser to null on logout attempt
-      setCurrentUser(null);
+        setCurrentUser(null);
       return { 
         success: response.success, 
         message: response.message || 'Logged out successfully' 

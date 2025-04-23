@@ -82,52 +82,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Quick action buttons */
-.quick-actions {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
-  z-index: 2;
-}
-
-.product-card:hover .quick-actions {
-  transform: translateY(0);
-}
-
-.quick-action-btn {
-  background-color: #6b21a8;
-  color: #ffffff;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  padding: 0;
-}
-
-.quick-action-btn:hover {
-  background-color: #f927be;
-  color: #ffffff;
-  transform: translateY(-3px);
-}
-
-.quick-action-btn .material-icons {
-  font-size: 20px;
-}
-
 .product-info {
   padding: 16px;
   display: flex;
@@ -222,6 +176,8 @@
   margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid rgba(150, 150, 150, 0.2);
+  position: relative;
+  z-index: 10;
 }
 
 .product-price {
@@ -246,6 +202,8 @@
   align-items: center;
   gap: 4px;
   position: relative;
+  z-index: 20; /* Higher z-index to ensure it's above the link */
+  pointer-events: auto; /* Ensure the button receives click events */
 }
 
 .cart-icon {

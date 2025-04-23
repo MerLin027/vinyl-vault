@@ -161,13 +161,6 @@ const Signup = () => {
             {errors.confirmPassword && <div className="error-message">{errors.confirmPassword}</div>}
           </div>
           
-          <div className="form-footer">
-            <div className="remember-me">
-              <input type="checkbox" id="terms" />
-              <label htmlFor="terms">I agree to the Terms & Conditions</label>
-            </div>
-          </div>
-          
           <button 
             type="submit" 
             className="login-button"

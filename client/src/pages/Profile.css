@@ -198,7 +198,6 @@
   font-size: 0.9rem;
   color: #d1d5db;
   margin: 0 0 0.5rem 0;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
@@ -313,4 +312,24 @@
   .edit-button, .cancel-button {
     width: 100%;
   }
+}
+
+/* Add a style rule to ensure no text is transformed to uppercase */
+.profile-container *,
+.profile-content *,
+.profile-details *,
+.profile-info *,
+.info-group *,
+.info-group h3,
+.profile-meta h2,
+.form-group label {
+  text-transform: none !important;
+}
+
+/* Modify existing h3 styles */
+.info-group h3 {
+  font-size: 0.9rem;
+  color: #d1d5db;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 0.5px;
 } 

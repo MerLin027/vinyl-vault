@@ -117,14 +117,6 @@ const Login = () => {
             {errors.password && <div className="error-message">{errors.password}</div>}
           </div>
           
-          <div className="form-footer">
-            <div className="remember-me">
-              <input type="checkbox" id="remember" />
-              <label htmlFor="remember">Remember me</label>
-            </div>
-            <button type="button" className="forgot-password">Forgot Password?</button>
-          </div>
-          
           <button 
             type="submit" 
             className="login-button"

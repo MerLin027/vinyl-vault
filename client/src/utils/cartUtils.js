@@ -19,7 +19,7 @@ export const addToCart = (product) => {
     id: product.id,
     title: product.title,
     price: parseFloat(product.price),
-    image: product.image,
+    images: product.images,
     category: product.category,
     quantity: 1
   };
