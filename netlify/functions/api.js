@@ -20,7 +20,7 @@ let users = [
   // Default test user
   {
     email: "test@test.com",
-    name: "Test User",
+    username: "Test User",
     password: "test123"
   }
 ];
@@ -45,8 +45,8 @@ router.post('/auth/signup', (req, res) => {
     return res.status(400).json({ success: false, error: 'Email already registered' });
   }
 
-  // Store user
-  users.push({ email, name: username, password });
+  // Store user with consistent field names
+  users.push({ email, username, password });
   res.status(201).json({ success: true, message: 'User registered successfully' });
 });
 
@@ -59,12 +59,20 @@ router.post('/auth/login', (req, res) => {
   if (user) {
     // Create a simple session
     const sessionId = Date.now().toString();
-    activeSessions[sessionId] = { email: user.email, name: user.name };
+    // Store full user data in the session
+    activeSessions[sessionId] = { 
+      email: user.email, 
+      username: user.username 
+    };
     
-    // Set a cookie with the session ID
+    // Return user data with consistent field names
     res.json({ 
       success: true, 
-      user: { email: user.email, name: user.name, sessionId },
+      user: { 
+        email: user.email, 
+        username: user.username, 
+        sessionId 
+      },
       message: 'Login successful'
     });
   } else {
@@ -83,6 +91,7 @@ router.post('/auth/logout', (req, res) => {
 router.get('/auth/status', (req, res) => {
   const sessionId = req.query.sessionId;
   if (sessionId && activeSessions[sessionId]) {
+    // Return the complete user data from the session
     res.json({ 
       success: true, 
       authenticated: true,

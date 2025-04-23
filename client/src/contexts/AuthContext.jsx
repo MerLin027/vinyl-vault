@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { authAPI } from '../utils/api';
 
 // Create Auth Context
@@ -10,10 +10,35 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Debug function to log user data changes
+  const logUserData = (data, source) => {
+    console.log(`User data from ${source}:`, data);
+  };
+
+  // Check authentication status - wrapped in useCallback to prevent unnecessary re-renders
+  const checkAuth = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await authAPI.checkStatus();
+      
+      if (response.authenticated && response.user) {
+        logUserData(response.user, 'checkAuth');
+        setCurrentUser(response.user);
+      } else {
+        setCurrentUser(null);
+      }
+    } catch (err) {
+      setError('Authentication check failed');
+      setCurrentUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);  // Empty dependency array as this doesn't depend on any props or state
+
   // Check if user is already authenticated on mount
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);  // Added checkAuth to the dependency array
 
   // Login method
   const login = async (email, password) => {
@@ -22,6 +47,7 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.login(email, password);
       
       if (response.success) {
+        logUserData(response.user, 'login');
         setCurrentUser(response.user);
         return { success: true, message: response.message };
       } else {
@@ -35,11 +61,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Signup method
-  const signup = async (email, username, password) => {
+  // Signup method - updated to take a credentials object
+  const signup = async (credentials) => {
     try {
       setError(null);
-      const response = await authAPI.signup({ email, username, password });
+      const response = await authAPI.signup(credentials);
       return { success: response.success, message: response.message };
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Signup failed';
@@ -65,25 +91,6 @@ export const AuthProvider = ({ children }) => {
       const errorMessage = err.response?.data?.message || 'Logout failed';
       setError(errorMessage);
       return { success: false, message: errorMessage };
-    }
-  };
-
-  // Check authentication status
-  const checkAuth = async () => {
-    try {
-      setLoading(true);
-      const response = await authAPI.checkStatus();
-      
-      if (response.authenticated) {
-        setCurrentUser(response.user);
-      } else {
-        setCurrentUser(null);
-      }
-    } catch (err) {
-      setError('Authentication check failed');
-      setCurrentUser(null);
-    } finally {
-      setLoading(false);
     }
   };
 

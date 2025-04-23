@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import './Profile.css';
 import defaultAvatar from '../assets/icons/default-avatar.svg';
@@ -7,9 +7,15 @@ const Profile = () => {
   const { currentUser } = useAuth();
   const [editing, setEditing] = useState(false);
   
-  // Use current user data if available
+  // Debug output to console
+  useEffect(() => {
+    console.log('Current user data:', currentUser);
+  }, [currentUser]);
+  
+  // Use current user data if available, being flexible about field names
   const userData = {
-    username: currentUser?.name || 'User',
+    // Use username field if available, fall back to name field, otherwise use 'User'
+    username: currentUser?.username || currentUser?.name || 'User',
     email: currentUser?.email || 'No email provided',
     phone: currentUser?.phone || 'Not provided',
     address: currentUser?.address || 'Not provided'

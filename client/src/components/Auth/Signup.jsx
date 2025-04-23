@@ -68,7 +68,7 @@ const Signup = () => {
       
       try {
         const { username, email, password } = formData;
-        const result = await signup(email, username, password);
+        const result = await signup({ email, username, password });
         
         if (result.success) {
           navigate('/login');

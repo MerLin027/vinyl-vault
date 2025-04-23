@@ -18,6 +18,11 @@ const clearSession = () => {
   localStorage.removeItem('sessionId');
 };
 
+// Debug utility
+const logApiResponse = (endpoint, data) => {
+  console.log(`API Response from ${endpoint}:`, data);
+};
+
 // Auth API
 export const authAPI = {
   login: async (email, password) => {
@@ -31,6 +36,7 @@ export const authAPI = {
         credentials: 'include'
       });
       const data = await response.json();
+      logApiResponse('login', data);
       
       // If server returns an error message, include it in the response
       if (data.error) {
@@ -131,6 +137,7 @@ export const authAPI = {
         credentials: 'include'
       });
       const data = await response.json();
+      logApiResponse('checkStatus', data);
       
       // Standardize response format
       return {
