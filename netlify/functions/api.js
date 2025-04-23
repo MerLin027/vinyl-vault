@@ -8,7 +8,10 @@ const cors = require('cors');
 const app = express();
 
 // Configure middleware
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -22,8 +25,14 @@ let users = [
   }
 ];
 
+// Simple session storage (will reset on deploy/function cold start)
+let activeSessions = {};
+
+// Create router to handle paths
+const router = express.Router();
+
 // API Routes
-app.post('/api/auth/signup', (req, res) => {
+router.post('/auth/signup', (req, res) => {
   const { email, username, password } = req.body;
   
   // Simple validation
@@ -41,16 +50,21 @@ app.post('/api/auth/signup', (req, res) => {
   res.status(201).json({ success: true, message: 'User registered successfully' });
 });
 
-app.post('/api/auth/login', (req, res) => {
+router.post('/auth/login', (req, res) => {
   const { email, password } = req.body;
   
   // Find user by email and password
   const user = users.find(u => u.email === email && u.password === password);
   
   if (user) {
+    // Create a simple session
+    const sessionId = Date.now().toString();
+    activeSessions[sessionId] = { email: user.email, name: user.name };
+    
+    // Set a cookie with the session ID
     res.json({ 
       success: true, 
-      user: { email: user.email, name: user.name },
+      user: { email: user.email, name: user.name, sessionId },
       message: 'Login successful'
     });
   } else {
@@ -58,19 +72,34 @@ app.post('/api/auth/login', (req, res) => {
   }
 });
 
-app.post('/api/auth/logout', (req, res) => {
+router.post('/auth/logout', (req, res) => {
+  const { sessionId } = req.body;
+  if (sessionId && activeSessions[sessionId]) {
+    delete activeSessions[sessionId];
+  }
   res.status(200).json({ success: true, message: 'Logged out successfully' });
 });
 
-app.get('/api/auth/status', (req, res) => {
-  // In a real implementation, this would verify a JWT token
-  res.json({ success: true, authenticated: false });
+router.get('/auth/status', (req, res) => {
+  const sessionId = req.query.sessionId;
+  if (sessionId && activeSessions[sessionId]) {
+    res.json({ 
+      success: true, 
+      authenticated: true,
+      user: activeSessions[sessionId]
+    });
+  } else {
+    res.json({ success: true, authenticated: false });
+  }
 });
 
-// Default route to handle function invocation
-app.use('/.netlify/functions/api', (req, res) => {
+// Default route for function
+router.get('/', (req, res) => {
   res.json({ success: true, message: 'API is running' });
 });
+
+// Use the router for all function requests
+app.use('/.netlify/functions/api', router);
 
 // Export the serverless function
 module.exports.handler = serverless(app); 
