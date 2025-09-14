@@ -67,7 +67,3 @@ This project is configured for easy deployment on Netlify:
 - `client/` - React frontend application
 - `server/` - Node.js backend API server
 - `netlify/functions/` - Serverless functions for Netlify deployment
-
-## License
-
-ISC
