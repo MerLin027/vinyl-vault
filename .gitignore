@@ -19,6 +19,7 @@ dist/
 
 # Environment variables (IMPORTANT: Never commit these)
 .env
+.env.*
 .env.local
 .env.development
 .env.development.local
@@ -26,6 +27,11 @@ dist/
 .env.test.local
 .env.production
 .env.production.local
+*.env
+*.env.*
+.envrc
+config.local.js
+config.local.json
 
 # Logs
 logs
@@ -102,11 +108,129 @@ yarn-debug.log*
 # Package-lock (optional - some teams prefer to commit this)
 # Uncomment if you don't want to track package-lock.json
 # package-lock.json
+ & Credentials (CRITICAL - Never commit these)
+*.pem
+*.key
+*.cert
+*.crt
+*.cer
+*.p12
+*.pfx
+*.keystore
+*.jks
+.secrets
+secrets.*
+*secret*
+*credential*
+*credentials*
+.password
+*.password
+password.txt
+passwords.t
 
-# Database files (if you add local database)
+# Backup & Temporary Files (may contain sensitive data)
+*.bak
+*.backup
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.*.sw?
+\#*\#
+.#*
+
+# Security & Penetration Testing
+*.pcap
+*.cap
+nmap-scan*
+burp-state*
+.zaproxy/
+
+# CI/CD Secrets
+.github/secrets/
+.gitlab-ci-local/
+jenkins-credentials.xml
+
+# Docker secrets
+docker-compose.override.yml
+.docker/
+docker-secrets/
+
+# Terraform & Infrastructure
+*.tfvars
+*.tfstate
+*.tfstate.backup
+.terraform/
+terraform.rc
+
+# Kubernetes Secrets
+*secret*.yaml
+*secret*.yml
+kubeconfig
+kube-config
+
+# Local user configurations
+.vscode/settings.json
+.idea/workspace.xml
+.idea/tasks.xmlxt
+api-keys.*
+apikeys.*
+*.config.local
+*.local.config
+
+# SSH & GPG Keys
+id_rsa
+id_rsa.pub
+id_dsa
+id_dsa.pub
+id_ecdsa
+id_ecdsa.pub
+id_ed25519
+id_ed25519.pub
+*.ppk
+*.asc
+*.gpg
+
+# AWS & Cloud Provider Credentials
+.aws/
+.azure/
+.gcloud/
+credentials
+credentials.json
+gcp-key.json
+aws-key.json
+azure-credentials.json
+service-account*.json
+*serviceaccount*
+
+# Database & Session Files
 *.sqlite
 *.sqlite3
 *.db
+*.sql
+dump.sql
+*.dump
+sessions/
+session.json
+connect.sid
+
+# API & Service Keys
+.apikey
+.api-key
+stripe-key.*
+paypal-config.*
+firebase-adminsdk-*.json
+google-services.json
+GoogleService-Info.plist
+
+# OAuth & Authentication
+oauth.json
+oauth-credentials.json
+.oauth
+client_secret*.json
+token.json
+refresh_token.txt
 
 # Sensitive files
 *.pem
