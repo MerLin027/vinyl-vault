@@ -17,6 +17,10 @@ node_modules/
 dist/
 .netlify/
 
+# Vercel
+.vercel
+.vercel/
+
 # Environment variables (IMPORTANT: Never commit these)
 .env
 .env.*

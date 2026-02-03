@@ -1,7 +1,9 @@
 // API configuration
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? '/.netlify/functions/api' 
-  : 'http://localhost:5000/api';
+// For Vercel deployment
+const API_URL = process.env.REACT_APP_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? '/api' 
+    : 'http://localhost:3000/api');
 
 // Session management (for Netlify serverless functions)
 const storeSession = (sessionId) => {
