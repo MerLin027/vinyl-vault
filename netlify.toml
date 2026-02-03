@@ -1,0 +1,22 @@
+[build]
+  base = "."
+  command = "rm -rf client/node_modules client/.cache && npm --prefix client install && chmod +x client/node_modules/.bin/react-scripts && npm --prefix client run build"
+  publish = "client/build"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+  CI = "false"
+
+# Redirect all traffic to index.html for SPA routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Proxy API requests to your serverless functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

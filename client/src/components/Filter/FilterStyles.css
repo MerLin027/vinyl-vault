@@ -1,0 +1,254 @@
+/* Filter container styles */
+.filter-container {
+  background-color: #121212;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(150, 150, 150, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Filter header styles */
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(249, 39, 190, 0.3);
+  padding-bottom: 8px;
+}
+
+.filter-header h3 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Clear button with neon styling */
+.clear-filter-btn {
+  background-color: transparent;
+  color: #f927be;
+  border: 1px solid #f927be;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.clear-filter-btn:hover {
+  background-color: #f927be;
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(249, 39, 190, 0.6);
+}
+
+/* Filter options styles */
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+/* Decade options - horizontal layout */
+.decades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.decade-option {
+  flex: 0 0 auto;
+  background-color: rgba(107, 33, 168, 0.15);
+  padding: 5px 8px;
+  border-radius: 4px;
+}
+
+/* Hide default checkbox */
+.filter-option input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Custom checkbox */
+.checkbox-custom {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: #2d2d2d;
+  border: 1px solid rgba(249, 39, 190, 0.5);
+  border-radius: 3px;
+  margin-right: 10px;
+  transition: all 0.2s ease;
+}
+
+/* Checkmark */
+.checkbox-custom:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Show checkmark when checked */
+.filter-option input:checked ~ .checkbox-custom {
+  background-color: #f927be;
+  border-color: #f927be;
+}
+
+.filter-option input:checked ~ .checkbox-custom:after {
+  display: block;
+}
+
+/* Option label */
+.option-label {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.filter-option:hover .option-label {
+  color: #ffffff;
+}
+
+.filter-option input:checked ~ .option-label {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Filters sidebar */
+.filters-sidebar {
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(249, 39, 190, 0.4);
+  padding-bottom: 10px;
+}
+
+.filters-header h2 {
+  color: #ffffff;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.clear-all-btn {
+  background-color: transparent;
+  color: #f927be;
+  border: none;
+  font-size: 0.8rem;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.clear-all-btn:hover {
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(249, 39, 190, 0.8);
+}
+
+.clear-all-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  text-shadow: none;
+}
+
+/* Active filters section */
+.active-filters {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(150, 150, 150, 0.2);
+}
+
+.active-filters h3 {
+  color: #ffffff;
+  font-size: 1rem;
+  margin: 0 0 10px 0;
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgba(107, 33, 168, 0.6);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  gap: 6px;
+}
+
+.filter-tag button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.filter-tag button:hover {
+  color: #f927be;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .filters-sidebar {
+    max-width: 100%;
+  }
+  
+  .decades {
+    flex-wrap: wrap;
+  }
+  
+  .decade-option {
+    flex: 0 0 calc(50% - 8px);
+  }
+}
+
+@media (max-width: 480px) {
+  .decade-option {
+    flex: 0 0 100%;
+  }
+} 
