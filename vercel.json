@@ -1,4 +1,9 @@
 {
+  "version": 2,
+  "framework": null,
+  "installCommand": "npm install --prefix client",
+  "buildCommand": "npm run build --prefix client",
+  "outputDirectory": "client/build",
   "rewrites": [
     {
       "source": "/api/:path*",
