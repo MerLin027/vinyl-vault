@@ -2,7 +2,7 @@
   "version": 2,
   "framework": null,
   "installCommand": "npm install --prefix client",
-  "buildCommand": "npm run build --prefix client",
+  "buildCommand": "cd client && CI=false npm run build",
   "outputDirectory": "client/build",
   "rewrites": [
     {
